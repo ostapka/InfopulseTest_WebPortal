@@ -1,0 +1,26 @@
+﻿<table class="table table-striped">
+    <thead>
+        <tr>
+            <td>Product Id</td>
+            <td>Product Name</td>
+            <td>Product Category</td>
+            <td>Product Size</td>
+            <td>Quantity</td>
+            <td>Price</td>
+            <td>Action</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let p of products">
+            <td><a [routerLink]="['product', p.id]" class="nav-link">{{p?.id}}</a></td>
+            <td>{{p?.name}}</td>
+            <td>{{p?.category}}</td>
+            <td>{{p?.size}}</td>
+            <td>{{p?.quantity}}</td>
+            <td>{{p?.price}}</td>
+            <td>
+                <button class="btn btn-sm btn-danger" (click)="delete(p.id)">Delete</button>
+            </td>
+        </tr>
+    </tbody>
+</table>

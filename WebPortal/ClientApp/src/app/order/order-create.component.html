@@ -1,0 +1,22 @@
+﻿<div>
+    <h2>New order</h2>
+    <p><b>Created Date: </b> {{createdDate}}</p>
+    <p>
+        <b>Status: </b>
+        <select [(ngModel)]="order.status">
+            <option value='' disabled selected>Select status</option>
+            <option *ngFor="let name of enumKeys" [value]="name" > {{status[name]}} </option>
+        </select>
+    </p>
+    <p>
+        <b>Customer: </b>
+        <select>
+            <option value='' disabled selected>Select customer</option>
+            <option *ngFor="let c of customers" [value]="c.id"> {{c.customerName}} </option>
+        </select>
+    </p>
+    <div class="form-group">
+        <input type="button" value="Save" (click)="save()" class="btn btn-success" />
+        <a routerLink="/" class="btn btn-warning">Cancel</a>
+    </div>
+</div>

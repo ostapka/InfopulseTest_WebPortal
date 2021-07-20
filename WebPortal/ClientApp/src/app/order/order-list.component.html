@@ -1,0 +1,24 @@
+﻿<div>Orders</div>
+<div>
+    <a routerLink="/orders/create" class="btn btn-sm btn-primary">New Order</a>
+</div>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <td>Order Id</td>
+            <td>Customer Name</td>
+            <td>Customer Address</td>
+            <td>Total Cost</td>
+            <td>Status</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let o of orders">
+            <td>{{o?.id}}</td>
+            <td>{{o?.customerName}}</td>
+            <td>{{o?.customerAddress}}</td>
+            <td>{{o?.totalCost}}</td>
+            <td>{{status[o?.status]}}</td>
+        </tr>
+    </tbody>
+</table>

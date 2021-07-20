@@ -1,0 +1,22 @@
+﻿<div>Customers</div>
+<div>
+    <a routerLink="/customers/create" class="btn btn-sm btn-primary">New Customer</a>
+</div>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <td>Customer Name</td>
+            <td>Customer Address</td>
+            <td>Total Sum</td>
+            <td>Count</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let c of customers">
+            <td>{{c?.customerName}}</td>
+            <td>{{c?.customerAddress}}</td>
+            <td>{{c?.totalSum}}</td>
+            <td>{{c?.count}}</td>
+        </tr>
+    </tbody>
+</table>
