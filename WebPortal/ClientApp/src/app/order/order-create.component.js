@@ -8,28 +8,37 @@ import { Component } from '@angular/core';
 import { OrderCreation } from '../models/orderCreation';
 import { StatusEnum } from '../models/statusEnum';
 let OrderCreateComponent = class OrderCreateComponent {
-    constructor(dataOrderService, dataCustomerService, router) {
+    constructor(dataOrderService, dataCustomerService, dataProductService, router) {
         this.dataOrderService = dataOrderService;
         this.dataCustomerService = dataCustomerService;
+        this.dataProductService = dataProductService;
         this.router = router;
         this.order = new OrderCreation(); // добавляемый объект
         this.createdDate = this.transformDate();
         this.status = StatusEnum;
         this.enumKeys = [];
+        this.loaded = false;
         this.enumKeys = Object.keys(this.status).filter(Number);
     }
     ngOnInit() {
         this.load();
     }
     load() {
-        this.dataCustomerService.getCustomers().subscribe((data) => this.customers = data);
+        this.dataCustomerService.getCustomers().subscribe((data) => { console.log(data); return this.customers = data; });
     }
     save() {
+        this.order.customerId = +this.order.customerId;
+        this.order.status = +this.order.status;
         this.dataOrderService.createOrder(this.order).subscribe(data => this.router.navigateByUrl("/"));
     }
     transformDate() {
         let newDate = new Date();
         return `${newDate.getDate()}/${newDate.getMonth() + 1}/${newDate.getFullYear()}`;
+    }
+    addToOrder(order) {
+        //console.log(order.products);
+        //let productAdd = new ProductAddToOrderComponent(this.dataOrderService, this.dataProductService, this.router, this);
+        this.router.navigateByUrl("orders/create/addToOrder");
     }
 };
 OrderCreateComponent = __decorate([

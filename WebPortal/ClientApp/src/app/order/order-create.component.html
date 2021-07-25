@@ -1,22 +1,59 @@
 ﻿<div>
     <h2>New order</h2>
-    <p><b>Created Date: </b> {{createdDate}}</p>
-    <p>
-        <b>Status: </b>
-        <select [(ngModel)]="order.status">
-            <option value='' disabled selected>Select status</option>
-            <option *ngFor="let name of enumKeys" [value]="name" > {{status[name]}} </option>
-        </select>
-    </p>
-    <p>
-        <b>Customer: </b>
-        <select>
-            <option value='' disabled selected>Select customer</option>
-            <option *ngFor="let c of customers" [value]="c.id"> {{c.customerName}} </option>
-        </select>
-    </p>
+    <div class="form-group">
+        <p><b>Created Date: </b> {{createdDate}}</p>
+        <p>
+            <b>Status: </b>
+            <select [(ngModel)]="order.status">
+                <option value='' disabled selected>Select status</option>
+                <option *ngFor="let name of enumKeys" [ngValue]="name"> {{status[name]}} </option>
+            </select>
+        </p>
+        <p>
+            <b>Customer: </b>
+            <select [(ngModel)]="order.customerId">
+                <option value='' disabled selected>Select customer</option>
+                <option *ngFor="let c of customers" [value]="c.id"> {{c.customerName}} </option>
+            </select>
+        </p>
+        <div>
+            <b>Add Products: </b>
+            <div *ngIf="order.id; else other_content">
+                <a [routerLink]="['addToOrder', order.id]" class="btn btn-sm btn-primary">Add Product To Order</a>
+            </div>
+            
+        </div>
+        <div *ngIf="products">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <td>Product Id</td>
+                        <td>Product Name</td>
+                        <td>Product Category</td>
+                        <td>Product Size</td>
+                        <td>Quantity</td>
+                        <td>Price</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let p of products">
+                        <td><a [routerLink]="['product', p.id]" class="nav-link">{{p?.id}}</a></td>
+                        <td>{{p?.name}}</td>
+                        <td>{{p?.category}}</td>
+                        <td>{{p?.size}}</td>
+                        <td>{{p?.quantity}}</td>
+                        <td>{{p?.price}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
     <div class="form-group">
         <input type="button" value="Save" (click)="save()" class="btn btn-success" />
         <a routerLink="/" class="btn btn-warning">Cancel</a>
     </div>
 </div>
+<ng-template #other_content>
+    <!--<input type="button" value="Add Product To New Order" (click)="addToOrder(this)" class="btn btn-sm btn-primary" />-->
+    <a routerLink="addToOrder" class="btn btn-sm btn-primary">Add Product To New Order</a>
+</ng-template>

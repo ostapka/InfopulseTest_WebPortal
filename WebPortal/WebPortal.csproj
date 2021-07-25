@@ -18,8 +18,10 @@
     <None Remove="ClientApp\src\app\order\order-create.component.ts" />
     <None Remove="ClientApp\src\app\order\order-list.component.ts" />
     <None Remove="ClientApp\src\app\product.ts" />
+    <None Remove="ClientApp\src\app\product\product-add-to-order.component.ts" />
     <None Remove="ClientApp\src\app\product\product-detail.component.ts" />
     <None Remove="ClientApp\src\app\product\product-list.component.ts" />
+    <None Remove="ClientApp\src\app\services\common.service.ts" />
     <None Remove="ClientApp\src\app\services\order.service.ts" />
     <None Remove="ClientApp\src\app\services\product.service.ts" />
     <None Remove="ClientApp\src\main.ts" />
@@ -42,8 +44,10 @@
     <TypeScriptCompile Include="ClientApp\src\app\models\statusEnum.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\order\order-create.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\order\order-list.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\order\product-add-to-order.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\product\product-detail.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\product\product-list.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\services\common.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\customer.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\not-found\not-found.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\product.ts" />

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using WebPortal.Models;
 
@@ -54,7 +55,7 @@ namespace WebPortal.Util
         }
         public void CreateOrder(OrderCreation order)
         {
-            db.Orders.Add(new Order { Status = order.Status });
+            db.Orders.Add(new Order { Status = order.Status, CustomerId = order.CustomerId });
             db.SaveChanges();
         }
 
@@ -71,12 +72,13 @@ namespace WebPortal.Util
 
         public IEnumerable<ShowedOrder> GetOrders()
         {
+            Debug.WriteLine("Hello, world!");
             return db.Orders.Select(o => new ShowedOrder
             {
                 Id = o.Id,
                 CustomerName = o.Customer.CustomerName,
                 CustomerAddress = o.Customer.CustomerAddress,
-                TotalCost = o.Products.Select(p => p.Price * p.Quantity).Sum(),
+                TotalCost = o.ProductForOrder.Select(p => p.Product.Price * p.Quantity).Sum(),
                 Status = o.Status
             }).ToList();
         }

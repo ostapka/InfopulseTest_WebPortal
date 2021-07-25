@@ -13,6 +13,9 @@ let OrderService = class OrderService {
     getOrders() {
         return this.http.get(this.url);
     }
+    getOrder(id) {
+        return this.http.get(this.url + '/' + id);
+    }
     createOrder(order) {
         return this.http.post(this.url, order);
     }

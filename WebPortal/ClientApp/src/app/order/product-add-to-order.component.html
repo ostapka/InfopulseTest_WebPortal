@@ -1,0 +1,23 @@
+﻿<div>
+    <div>
+        <ng-container *ngIf="loaded; else content">
+            <p><b>Add Product to Order </b> {{id}}</p>
+        </ng-container>
+    </div>
+</div>
+<ng-template #content>
+    <p>Add Product to New Order.</p>
+    <p><b>Product ID: </b>{{product.id}}</p>
+    <p>
+        <b>Product Name: </b>
+        <select [(ngModel)]="id" (change)="selectChange()">
+            <option value='' disabled selected>Select product</option>
+            <option *ngFor="let p of products" [value]="p.id"> {{p.name}} </option>
+        </select>
+    </p>
+    <p><b>Product Category: </b>{{product.category}}</p>
+    <div class="form-group">
+        <input type="button" value="Save" (click)="save()" class="btn btn-success" />
+        <a routerLink="/orders/create" class="btn btn-warning">Cancel</a>
+    </div>
+</ng-template>
