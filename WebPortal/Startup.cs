@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Text.Json.Serialization;
 using WebPortal.Models;
 using WebPortal.Util;
 
@@ -25,7 +27,8 @@ namespace WebPortal
             services.AddTransient<ICustomerRepository, CustomerRepository>();
             services.AddTransient<IRepository, OrderProductRepository>();
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(option =>
+            option.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddSpaStaticFiles(configuration =>
             {

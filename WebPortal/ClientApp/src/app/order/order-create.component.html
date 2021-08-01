@@ -4,14 +4,14 @@
         <p><b>Created Date: </b> {{createdDate}}</p>
         <p>
             <b>Status: </b>
-            <select [(ngModel)]="order.status">
+            <select [(ngModel)]="order.status" (change)="selectChange()">
                 <option value='' disabled selected>Select status</option>
                 <option *ngFor="let name of enumKeys" [ngValue]="name"> {{status[name]}} </option>
             </select>
         </p>
         <p>
             <b>Customer: </b>
-            <select [(ngModel)]="order.customerId">
+            <select [(ngModel)]="order.customerId" (change)="selectChange()">
                 <option value='' disabled selected>Select customer</option>
                 <option *ngFor="let c of customers" [value]="c.id"> {{c.customerName}} </option>
             </select>
@@ -23,7 +23,7 @@
             </div>
             
         </div>
-        <div *ngIf="products">
+        <div *ngIf="order.products">
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -36,7 +36,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let p of products">
+                    <tr *ngFor="let p of order.products">
                         <td><a [routerLink]="['product', p.id]" class="nav-link">{{p?.id}}</a></td>
                         <td>{{p?.name}}</td>
                         <td>{{p?.category}}</td>
@@ -54,6 +54,6 @@
     </div>
 </div>
 <ng-template #other_content>
-    <!--<input type="button" value="Add Product To New Order" (click)="addToOrder(this)" class="btn btn-sm btn-primary" />-->
-    <a routerLink="addToOrder" class="btn btn-sm btn-primary">Add Product To New Order</a>
+    <input type="button" value="Add Product To New Order" (click)="addToOrder(this)" class="btn btn-sm btn-primary" />
+    <!--<a routerLink="addToOrder" class="btn btn-sm btn-primary">Add Product To New Order</a>-->
 </ng-template>

@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { Routes, RouterModule } from '@angular/router';
+//import { Observable, Subject } from 'rxjs';
 
 import { AppComponent } from './app.component';
 import { OrderListComponent } from './order/order-list.component';
@@ -17,6 +18,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { CustomerService } from './services/customer.service';
 import { ProductService } from './services/product.service';
 import { OrderService } from './services/order.service';
+import { CommonService } from './services/common.service';
 
 
 // определение маршрутов
@@ -39,7 +41,7 @@ const appRoutes: Routes = [
     declarations: [AppComponent, OrderListComponent, OrderCreateComponent, ProductAddToOrderComponent,
         ProductListComponent, ProductDetailComponent, CustomerListComponent,
         CustomerCreateComponent, NotFoundComponent],
-    providers: [CustomerService, ProductService, OrderService], // регистрация сервисов
+    providers: [CustomerService, ProductService, OrderService, CommonService], // регистрация сервисов
     bootstrap: [AppComponent]
 })
 export class AppModule { }

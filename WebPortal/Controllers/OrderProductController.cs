@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using WebPortal.Models;
 using WebPortal.Util;
 
@@ -15,32 +16,32 @@ namespace WebPortal.Controllers
         }
         
         [HttpGet("api/products")]
-        public IEnumerable<Product> GetProducts()
+        public async Task<IEnumerable<Product>> GetProducts()
         {
-            return repo.GetProducts();
+            return await repo.GetProductsAsync();
         }
         [HttpGet("api/products/{id}")]
-        public Product GetProduct(int id)
+        public async Task<Product> GetProduct(int id)
         {
-            return repo.GetProduct(id);
+            return await repo.GetProductAsync(id);
         }
         [HttpDelete("api/products/{id}")]
-        public IActionResult DeleteProduct(int id)
+        public async Task<IActionResult> DeleteProduct(int id)
         {
-            Product product = repo.DeleteProduct(id);
+            Product product = await repo.DeleteProductAsync(id);
             return Ok(product);
         }
         [HttpGet("api/orders")]
-        public IEnumerable<ShowedOrder> GetOrders()
+        public async Task<IEnumerable<ShowedOrder>> GetOrders()
         {
-            return repo.GetOrders();
+            return await repo.GetOrdersAsync();
         }
         [HttpPost("api/orders")]
-        public IActionResult Post(OrderCreation order)
+        public async Task<IActionResult> Post(OrderCreation order)
         {
             if (ModelState.IsValid)
             {
-                repo.CreateOrder(order);
+                await repo.CreateOrderAsync(order);
                 return Ok(order);
             }
             return BadRequest(ModelState);

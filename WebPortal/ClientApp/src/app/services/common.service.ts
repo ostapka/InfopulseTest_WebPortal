@@ -1,11 +1,16 @@
 ﻿import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
+import { OrderCreation } from '../models/orderCreation';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class CommonService {
-    invokeEvent: Subject<any> = new Subject();
+    subject: BehaviorSubject<any> = new BehaviorSubject(OrderCreation);
 
-    callMethodOfSecondComponent() {
-        this.invokeEvent.next(true);
+    sendOrder(order: OrderCreation) {
+        this.subject.next(order);
+        this.subject.complete();
+    }
+    onOrder(): Observable<any> {
+        return this.subject.asObservable();
     }
 }

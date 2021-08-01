@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using WebPortal.Models;
 
 namespace WebPortal.Util
@@ -53,45 +55,43 @@ namespace WebPortal.Util
                 db.Orders.Add(order2);
             }
         }
-        public void CreateOrder(OrderCreation order)
+        public async Task CreateOrderAsync(OrderCreation order)
         {
-            db.Orders.Add(new Order { Status = order.Status, CustomerId = order.CustomerId });
-            db.SaveChanges();
+            Order orderCreate = new Order { Status = order.Status, CustomerId = order.CustomerId};
+            order.Products.Select(p => { orderCreate.ProductForOrder.Add(new ProductForOrder() { Quantity = p.Quantity, OrderId = order.Id, ProductId = p.Id}); return db.Products.Update(p); }).ToList();
+            await db.Orders.AddAsync(orderCreate);
+            await db.SaveChangesAsync();
         }
 
-        public Product DeleteProduct(int id)
+        public async Task<Product> DeleteProductAsync(int id)
         {
-            Product product = db.Products.FirstOrDefault(x => x.Id == id);
+            Product product = await db.Products.FirstOrDefaultAsync(x => x.Id == id);
             if (product != null)
             {
                 db.Products.Remove(product);
-                db.SaveChanges();
+                await db.SaveChangesAsync();
             }
             return product;
         }
 
-        public IEnumerable<ShowedOrder> GetOrders()
+        public async Task<IEnumerable<ShowedOrder>> GetOrdersAsync()
         {
-            Debug.WriteLine("Hello, world!");
-            return db.Orders.Select(o => new ShowedOrder
+            return await db.Orders.Select(o => new ShowedOrder
             {
                 Id = o.Id,
                 CustomerName = o.Customer.CustomerName,
                 CustomerAddress = o.Customer.CustomerAddress,
                 TotalCost = o.ProductForOrder.Select(p => p.Product.Price * p.Quantity).Sum(),
                 Status = o.Status
-            }).ToList();
+            }).ToListAsync();
         }
 
-        public Product GetProduct(int id)
+        public async Task<Product> GetProductAsync(int id)
         {
-            Product product = db.Products.FirstOrDefault(x => x.Id == id);
+            Product product = await db.Products.FirstOrDefaultAsync(x => x.Id == id);
             return product;
         }
 
-        public IEnumerable<Product> GetProducts()
-        {
-            return db.Products.ToList();
-        }
+        public async Task<IEnumerable<Product>> GetProductsAsync() => await db.Products.ToListAsync();
     }
 }

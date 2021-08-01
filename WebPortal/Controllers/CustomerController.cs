@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using WebPortal.Models;
 using WebPortal.Util;
 
@@ -15,16 +16,16 @@ namespace WebPortal.Controllers
             this.repo = repo;
         }
         [HttpGet]
-        public IEnumerable<ShowedCustomer> Get()
+        public async Task<IEnumerable<ShowedCustomer>> Get()
         {
-            return repo.Get();
+            return await repo.GetAsync();
         }
         [HttpPost]
-        public IActionResult Post(Customer customer)
+        public async Task<IActionResult> Post(Customer customer)
         {
             if (ModelState.IsValid)
             {
-                repo.Post(customer);
+                await repo.PostAsync(customer);
                 return Ok(customer);
             }
             return BadRequest(ModelState);

@@ -23,6 +23,8 @@ namespace WebPortal.Models
     public class OrderCreation : OrderBase
     {
         public int CustomerId { get; set; }
-        
+        public List<Product> Products { get; set; } = new List<Product>();
+        public List<ProductForOrder> ProductForOrder { get; set; } = new List<ProductForOrder>();
+
     }
 }

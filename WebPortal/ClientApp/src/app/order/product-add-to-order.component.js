@@ -6,18 +6,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { Component } from '@angular/core';
 import { Product } from '../models/product';
+import { OrderCreation } from '../models/orderCreation';
 let ProductAddToOrderComponent = class ProductAddToOrderComponent {
-    constructor(dataOrderService, dataProductService, router /*, private orderCreator: OrderCreateComponent*/) {
+    constructor(dataCommonService, dataOrderService, dataProductService, router) {
+        this.dataCommonService = dataCommonService;
         this.dataOrderService = dataOrderService;
         this.dataProductService = dataProductService;
         this.router = router;
         this.product = new Product();
-        //orderCreator: OrderCreateComponent ;
+        this.order = new OrderCreation();
         this.loaded = false;
     }
     ngOnInit() {
         this.load();
+        this.order = this.dataCommonService.subject.getValue();
     }
+    //ngOnDestroy() {
+    //    this.dataOtherCommonService.subject.unsubscribe();
+    //}
     load() {
         this.dataProductService.getProducts().subscribe((data) => this.products = data);
         if (this.id)
@@ -27,14 +33,17 @@ let ProductAddToOrderComponent = class ProductAddToOrderComponent {
     selectChange() {
         this.id = +this.id;
         this.product = this.products.find(el => el.id == this.id);
+        if (!this.order.products)
+            this.order.products = [];
+        this.order.products.push(this.product);
     }
     save() {
-        //console.log(this.orderCreator);
-        //if (this.orderCreator.products == undefined) {
-        //    this.orderCreator.products = [];
-        //}
-        //this.orderCreator.products.push(this.product);
+        this.sendOrder();
         this.router.navigateByUrl("/orders/create");
+    }
+    sendOrder() {
+        // send order to subscribers via observable behavior subject
+        this.dataCommonService.sendOrder(this.order);
     }
 };
 ProductAddToOrderComponent = __decorate([

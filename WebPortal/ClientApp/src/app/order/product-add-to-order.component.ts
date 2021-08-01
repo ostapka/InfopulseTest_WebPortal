@@ -1,43 +1,56 @@
-﻿import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+﻿import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ProductService } from '../services/product.service';
 import { Product } from '../models/product';
-import { OrderCreateComponent } from './order-create.component';
+import { CommonService } from '../services/common.service';
 import { OrderService } from '../services/order.service';
 import { Order } from '../models/order';
+import { OrderCreation } from '../models/orderCreation';
+import { Subscription } from 'rxjs';
 
 @Component({
     templateUrl: './product-add-to-order.component.html'
 })
-export class ProductAddToOrderComponent implements OnInit {
+export class ProductAddToOrderComponent implements OnInit/*, OnDestroy*/ {
     id: number;
     product: Product = new Product();
-    order: Order;
-    //orderCreator: OrderCreateComponent ;
+    order: OrderCreation = new OrderCreation();
     loaded: boolean = false;
     products: Product[];
-    constructor(private dataOrderService: OrderService, private dataProductService: ProductService, private router: Router/*, private orderCreator: OrderCreateComponent*/) {
+    subscription: Subscription;
+    constructor(private dataCommonService: CommonService,
+                private dataOrderService: OrderService,
+                private dataProductService: ProductService,
+                private router: Router) {
         
     }
     ngOnInit() {
         this.load();
+        this.order = this.dataCommonService.subject.getValue();
     }
+    //ngOnDestroy() {
+    //    this.dataOtherCommonService.subject.unsubscribe();
+    //}
     load() {
         this.dataProductService.getProducts().subscribe((data: Product[]) => this.products = data);
         if (this.id)
             this.dataOrderService.getOrder(this.id)
-                .subscribe((data: Order) => { this.order = data; this.loaded = true; });
+                .subscribe((data: OrderCreation) => { this.order = data; this.loaded = true; });
     }
     selectChange() {
         this.id = +this.id;
         this.product = this.products.find(el => el.id == this.id);
+        if (!this.order.products)
+            this.order.products = [];
+        this.order.products.push(this.product);
     }
     save() {
-        //console.log(this.orderCreator);
-        //if (this.orderCreator.products == undefined) {
-        //    this.orderCreator.products = [];
-        //}
-        //this.orderCreator.products.push(this.product);
+        this.sendOrder();
         this.router.navigateByUrl("/orders/create");
+    }
+    sendOrder(): void {
+        // send order to subscribers via observable behavior subject
+        this.dataCommonService.sendOrder(this.order);
+        
     }
 }

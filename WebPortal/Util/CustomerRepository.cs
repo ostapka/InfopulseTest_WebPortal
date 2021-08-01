@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using WebPortal.Models;
 
 namespace WebPortal.Util
@@ -21,10 +23,11 @@ namespace WebPortal.Util
                                 Select(p => p.Product.Price * p.Quantity).Sum(),
                 Count = c.Orders.Count() }).ToList();
         }
-        public void Post(Customer customer)
+        public async Task<IEnumerable<ShowedCustomer>> GetAsync() => await Task.Run(() => Get());
+        public async Task PostAsync(Customer customer)
         {
-            db.Customers.Add(customer);
-            db.SaveChanges();
+            await db.Customers.AddAsync(customer);
+            await db.SaveChangesAsync();
         }
     }
 }

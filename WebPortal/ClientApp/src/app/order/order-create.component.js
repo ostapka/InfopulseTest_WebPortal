@@ -8,10 +8,10 @@ import { Component } from '@angular/core';
 import { OrderCreation } from '../models/orderCreation';
 import { StatusEnum } from '../models/statusEnum';
 let OrderCreateComponent = class OrderCreateComponent {
-    constructor(dataOrderService, dataCustomerService, dataProductService, router) {
+    constructor(dataCommonService, dataOrderService, dataCustomerService, router) {
+        this.dataCommonService = dataCommonService;
         this.dataOrderService = dataOrderService;
         this.dataCustomerService = dataCustomerService;
-        this.dataProductService = dataProductService;
         this.router = router;
         this.order = new OrderCreation(); // добавляемый объект
         this.createdDate = this.transformDate();
@@ -22,23 +22,33 @@ let OrderCreateComponent = class OrderCreateComponent {
     }
     ngOnInit() {
         this.load();
+        if (this.dataCommonService.subject.isStopped)
+            this.method();
     }
     load() {
-        this.dataCustomerService.getCustomers().subscribe((data) => { console.log(data); return this.customers = data; });
+        this.dataCustomerService.getCustomers().subscribe((data) => this.customers = data);
     }
     save() {
-        this.order.customerId = +this.order.customerId;
-        this.order.status = +this.order.status;
         this.dataOrderService.createOrder(this.order).subscribe(data => this.router.navigateByUrl("/"));
     }
     transformDate() {
         let newDate = new Date();
         return `${newDate.getDate()}/${newDate.getMonth() + 1}/${newDate.getFullYear()}`;
     }
-    addToOrder(order) {
-        //console.log(order.products);
-        //let productAdd = new ProductAddToOrderComponent(this.dataOrderService, this.dataProductService, this.router, this);
+    method() {
+        this.order = this.dataCommonService.subject.value;
+    }
+    selectChange() {
+        this.order.customerId = +this.order.customerId;
+        this.order.status = +this.order.status;
+    }
+    addToOrder() {
+        this.sendOrder();
         this.router.navigateByUrl("orders/create/addToOrder");
+    }
+    sendOrder() {
+        // send order to subscribers via observable behavior subject
+        this.dataCommonService.sendOrder(this.order);
     }
 };
 OrderCreateComponent = __decorate([
